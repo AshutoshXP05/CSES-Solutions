@@ -1,0 +1,119 @@
+#include <bits/stdc++.h>
+//with test cases
+using namespace std;
+void solve();
+#define f(i,s,e) for(long long int i=s;i<e;i++)      // FOR LOOP 
+
+#define MOD 1000000007         // MODULUS 
+#define PI 3.1415926535897932384626433832795
+#define pb push_back       // PUSH _ BACK 
+#define fi first         // FIRST 
+#define se second    //SECOND 
+#define endl '\n'      //  endl se fast hota hai isly we use /N 
+typedef long long ll;
+
+ll expo(ll a, ll b) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % MOD; a = (a * a) % MOD; b = b >> 1;} return res;} 
+
+
+// Modular Arithmetic
+ll mod_add(ll a, ll b) { return ((a % MOD) + (b % MOD)) % MOD; }
+
+ll mod_sub(ll a, ll b) { return ((a % MOD) - (b % MOD) + MOD) % MOD; }
+
+ll mod_mul(ll a, ll b) { return ((a % MOD) * (b % MOD)) % MOD; }
+
+ll mod_inv(ll a) { return expo(a, MOD - 2); }  // Using Fermat's Little Theorem
+
+#define yes cout<<"YES\n";              //  For yes 
+#define no cout<<"NO\n";               // For No
+typedef vector<int> vi;                // vector of int 
+typedef vector<vi> vvi;                 // Vector of vector of int 
+typedef pair<int, int> ii;      // Pair of int int 
+typedef vector<ii> vii;        // Vector of pair of int int 
+typedef vector<ll> vll;     // Vector of long long 
+typedef double ld;         // For double
+#define mii map<int, int>  // Map of int int 
+#define si set<int>      // Set of integer 
+#define sc set<char>    // Set of Character 
+
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.precision(10);
+    cout << fixed;
+    solve();
+    return 0;
+}
+
+// bool bipartite ( int ind, vector<vector<int>> &adj, vector<int> &group) {
+//     group[ind] = 1;
+//     queue<int> q;
+//     q.push(ind);
+    
+//    while ( ! q.empty() ) {
+//         int node = q.front();
+//         q.pop();
+//         for ( auto it : adj[node] ) {
+//              if ( group[it] == 0 ) {
+//                 if ( group[node] = 2 )
+//                 group[it] = 1;
+//                 else group[it] = 2;
+//                 q.push(it);
+                
+//              }
+//              else if  (group [it] == group[node]) return false;
+//         }
+//    }
+//    return true;
+// }
+
+
+bool check ( int start, vector<vector<int>>& graph, vector<int> &vis) {
+    // int n = graph.size();
+         
+         queue<int> q;
+         q.push(start);
+         vis[start] = 0;
+         while ( ! q.empty() ) {
+              int node = q.front();
+              q.pop();
+              for ( auto it : graph[node]) {
+                  if ( vis[it] == -1 ) {
+                      vis[it] = !vis[node];
+                      q.push(it);
+                  }
+                  else if ( vis[it] == vis[node]) return false;
+              }
+         }
+         return true;
+}
+   
+
+// user input ----
+void solve(){
+    int n , m;
+    cin >> n >> m;
+       vector<vector<int>> adj(n+1);
+    //    vector<int> group(n+1, 0);
+    vector<int> vis(n+1, -1);
+// Created graph
+       ll u, v;
+       for ( int i=1; i<=m; i++ ) {
+          cin >> u >> v;
+          adj[u].push_back(v);
+          adj[v].push_back(u);
+       }
+  
+       for ( int i=1; i<=n; i++ ) {
+        if ( vis[i] == -1 ) {
+             if ( check(i, adj, vis) == false ) { cout << "IMPOSSIBLE"; return;}
+        }
+       }
+      
+       for ( int i=1; i<=n; i++ ) {
+           cout << vis[i]+1 << " ";
+       }
+       cout << endl;
+       return;
+}
