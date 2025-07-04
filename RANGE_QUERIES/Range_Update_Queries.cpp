@@ -1,5 +1,5 @@
 
-// Application of Segment Tree --->
+// Application of Lazy Propogation --->
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -33,33 +33,85 @@ int main()
 ll n;
 vector<ll> arr;
 vector<ll> segTree;
+vector<ll> lazy;
 
 
-void buildTree(int i, int l, int r) {
+void buildTree(ll i, ll l, ll r) {
     if ( l == r ) {
         segTree[i] = arr[l];
         return;
     }
 
-    int mid = l + ( r - l ) / 2;
+    ll mid = l + ( r - l ) / 2;
     buildTree(2*i+1, l, mid);
     buildTree(2*i+2, mid+1, r) ;
 
-    segTree[i] = (segTree[2*i+1] ^ segTree[2*i+2]);
+    segTree[i] = (segTree[2*i+1] + segTree[2*i+2]);
 
 }
 
 
-ll findXorQuery ( int i, int l, int r, int left, int right ) {
-    if ( l > right || r < left ) return 0;
+ll printKthValue(ll i, ll l, ll r, ll ind ) {
+    // check in lazy array 
+    if ( lazy[i] != 0 ) {
+        segTree[i] += (r-l+1) * lazy[i] * 1LL;
+        
+        if ( l != r ) {
+            lazy[2*i+1] += lazy[i];
+            lazy[2*i+2] += lazy[i];
+        }
+        lazy[i] = 0;
+    }
 
-    if ( l >= left && r <= right ) return segTree[i];
+    if ( l == r  ) return segTree[i];
 
-     int mid = l + ( r - l ) / 2;
-    return (findXorQuery(2*i+1, l, mid, left, right)  ^ findXorQuery(2*i+2, mid+1, r, left, right));
+    int mid = l + ( r - l ) / 2;
+    if ( mid >= ind ) {
+       return printKthValue(2*i+1, l, mid, ind);
+    }
+    else {
+      return  printKthValue(2*i+2, mid+1, r, ind);
+    }
 
 }
 
+
+void updateRangeQueries ( ll i, ll l, ll r, ll start, ll end, ll val ) {
+    
+    // check in lazy array 
+    if ( lazy[i] != 0 ) {
+        segTree[i] += (r-l+1) * lazy[i] * 1LL;
+        
+        if ( l != r ) {
+            lazy[2*i+1] += lazy[i];
+            lazy[2*i+2] += lazy[i];
+        }
+        lazy[i] = 0;
+    }
+
+    // case 1 : Out of bound range 
+    if ( r < start || l > end || l > r  ) {
+        return;
+    }
+
+    // Case 2 : In the range 
+    if ( l >= start && r <= end ) {
+        segTree[i] += ( r - l + 1 ) * val * 1LL;
+        if ( l != r ) {
+            lazy[2*i+1] += val;
+            lazy[2*i+2] += val;
+        }
+        return;
+    }
+
+    // Case 3 : Overlapping Range 
+    ll mid = l + ( r - l ) / 2;
+    updateRangeQueries(2*i+1, l, mid, start, end, val );
+    updateRangeQueries(2*i+2, mid+1, r, start, end, val );
+
+     segTree[i] = (segTree[2*i+1] + segTree[2*i+2]);
+
+}
 
 
 void solve() {
@@ -68,15 +120,29 @@ void solve() {
 
     arr.resize(n);
     segTree.resize(4*n);
+    lazy.resize(4*n, 0);
 
-    for ( int i=0; i<n; i++ ) cin >> arr[i] ;
+    for ( ll i=0; i<n; i++ ) cin >> arr[i] ;
 
     buildTree(0, 0, n-1);
 
     while ( q-- ) {
-        ll a , b;
-        cin >> a >> b;
 
-        cout << findXorQuery(0, 0, n-1, a-1, b-1) << endl;
+        ll type ;
+        cin >> type;
+       
+        if ( type == 1 ) {
+            ll a, b ,u;
+            cin >> a >> b >> u;
+            updateRangeQueries(0, 0, n-1, a-1, b-1, u);
+        }
+
+        else {
+            ll k;
+            cin >> k;
+
+            cout << printKthValue(0, 0, n-1, k-1) << endl;
+        }
+ 
     }
 }
