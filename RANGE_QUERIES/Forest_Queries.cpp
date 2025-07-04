@@ -1,5 +1,5 @@
 
-// Application of 2D Prefix Sum --->
+//  2D Prefix Sum --->
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -44,7 +44,7 @@ void calculatePrefixSum(vector<vector<int>> &vec) {
         }
     }
 }
-
+ 
  
 void solve () {
     ll q;
