@@ -1,5 +1,5 @@
 
-//  2-Pointer Technique --->
+//  Modulus Operation and Hash Map --->
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -30,25 +30,32 @@ int main()
     return 0;
 }
 
-
-
-void solve() {
-    ll n , x;
-    cin >> n >> x;
+void solve()
+{
+    ll n;
+    cin >> n;
     vector<ll> arr(n);
-    for ( int i=0; i<n; i++ ) cin >> arr[i];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
 
-    map<ll,ll> prefixCount;
-
+    map<ll, int> mpp;
     ll sum = 0;
     ll cnt = 0;
-
-    prefixCount[0] = 1;
-    for ( int i=0; i<n; i++ ) {
+    mpp[0] = 1;
+    for (int i = 0; i < n; i++)
+    {
         sum += arr[i];
-        cnt += prefixCount[sum - x];
-        prefixCount[sum]++;
+        ll rem = sum % n;
+        if (rem < 0)
+        {
+            cnt += mpp[rem + n];
+            mpp[rem + n]++;
+        }
+        else
+        {
+            cnt += mpp[rem];
+            mpp[rem]++;
+        }
     }
     cout << cnt << endl;
 }
-
