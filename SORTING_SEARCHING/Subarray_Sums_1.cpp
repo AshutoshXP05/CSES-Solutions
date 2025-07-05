@@ -43,18 +43,17 @@ void solve()
     int j = 1;
     ll cnt = 0;
 
-    while (sum < x && j + 1 <= n)
-    {
+   while ( i <= n ) {
+      while ( sum < x && j + 1 <= n ) {
         j++;
-        sum += arr[j];
-    }
-    if (sum == x)
-    {
-        cnt++;
-    }
-    sum -= arr[i];
-    i++;
-}
+         sum += arr[j];
+      }
+      if ( sum == x ) {
+        cnt++; 
+      }
+      sum -= arr[i];
+      i++;
+   }
 
-cout << cnt << endl;
+    cout << cnt << endl;
 }

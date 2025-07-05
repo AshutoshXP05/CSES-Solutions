@@ -30,49 +30,45 @@ int main()
     return 0;
 }
 
-void solve()
-{
-    ll n, x;
+
+
+void solve() {
+    ll n , x;
     cin >> n >> x;
-    vector<ll> arr(n + 1);
-    for (int i = 1; i <= n; i++)
-        cin >> arr[i];
+    vector<ll> arr(n);
+    for ( int i=0; i<n; i++ ) cin >> arr[i];
+
+    map<ll,ll> prefixCount;
 
     ll sum = 0;
-    int i = 1;
-    int j = 1;
     ll cnt = 0;
 
-    while (j <= n && i <= j)
-    {
-
-        sum += arr[j];
-
-        if (sum == x)
-        {
-            cnt++;
-            sum -= arr[i];
-            i++;
-            j++;
-            continue;
-        }
-
-        if (sum < x)
-            {j++;
-            continue;}
-
-        if (sum > x)
-        {
-            while (sum > x)
-            {
-                sum -= arr[i];
-                i++;
-            }
-            if (sum == x)
-                cnt++;
-        }
-
-        j++;
+    prefixCount[0] = 1;
+    for ( int i=0; i<n; i++ ) {
+        sum += arr[i];
+        cnt += prefixCount[sum - x];
+        prefixCount[sum]++;
     }
     cout << cnt << endl;
 }
+
+
+//  ll n, x;
+//     cin >> n >> x;
+//     vector<ll> arr(n);
+//     for (int i = 0; i < n; i++) cin >> arr[i];
+
+//     unordered_map<ll, ll> prefixCount;
+//     ll prefixSum = 0;
+//     ll ans = 0;
+//     prefixCount[0] = 1;  // base case: prefixSum 0 occurs once
+
+//     for (int i = 0; i < n; i++) {
+//         prefixSum += arr[i];
+//         if (prefixCount.count(prefixSum - x)) {
+//             ans += prefixCount[prefixSum - x];
+//         }
+//         prefixCount[prefixSum]++;
+//     }
+
+//     cout << ans << endl;
