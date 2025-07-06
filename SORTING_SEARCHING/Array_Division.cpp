@@ -1,5 +1,5 @@
 
-//  Sliding Window and Binary Search --->
+//  Sliding Window and Binary Search  --->
 
 #include <bits/stdc++.h>
 using namespace std;
