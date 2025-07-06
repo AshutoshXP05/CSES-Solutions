@@ -43,22 +43,6 @@ void solve()
     sort(arrival.begin(), arrival.end());
     sort(departure.begin(), departure.end());
 
-    //  int i  = 0;
-    //  int j  = 0;
-    //  ll cnt = 0;
-     
-    //  while ( i < n ) {
-    //     if ( arrival[i] <= departure[j] ) {
-    //         cnt++;
-    //         cout << cnt << " ";
-    //         i++;
-    //     }
-    //     else {
-    //         cnt--;
-    //         cout << cnt << " ";
-    //         j++;
-    //     }
-    //  }
   int i = 0, j = 0;
     ll cnt = 0;
     ll ans = 0;
